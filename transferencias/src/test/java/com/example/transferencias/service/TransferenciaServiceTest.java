@@ -2,7 +2,7 @@ package com.example.transferencias.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -20,7 +20,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_DiaMenorQueZero() {
 		// Mockando a data atual
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() - (1000L * 60 * 60 * 24 * 2)); // 2 dias atrás
+		LocalDate dataDeTransferencia = LocalDate.now().minusDays(2); // 2 dias atrás
 
 		// Testando a regra de dias menores que 0
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);
@@ -30,8 +30,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_Entre1e10Dias() {
 		// Mockando a data para 5 dias no futuro
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 5)); // 5 dias no
-																										// futuro
+		LocalDate dataDeTransferencia = LocalDate.now().plusDays(5); // 5 dias no futuro
 
 		// Testando a taxa entre 1 e 10 dias
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);
@@ -41,8 +40,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_Entre11e20Dias() {
 		// Mockando a data para 15 dias no futuro
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 15)); // 15 dias no
-																										// futuro
+		LocalDate dataDeTransferencia = LocalDate.now().plusDays(15); // 15 dias no futuro
 
 		// Testando a taxa entre 11 e 20 dias
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);
@@ -52,8 +50,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_Entre21e30Dias() {
 		// Mockando a data para 25 dias no futuro
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 25)); // 25 dias no
-																										// futuro
+		LocalDate dataDeTransferencia = LocalDate.now().plusDays(25); // 25 dias no futuro
 
 		// Testando a taxa entre 21 e 30 dias
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);
@@ -63,8 +60,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_Entre31e40Dias() {
 		// Mockando a data para 35 dias no futuro
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 35)); // 35 dias no
-																										// futuro
+		LocalDate dataDeTransferencia = LocalDate.now().plusDays(35); // 35 dias no futuro
 
 		// Testando a taxa entre 31 e 40 dias
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);
@@ -74,8 +70,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_Entre41e50Dias() {
 		// Mockando a data para 45 dias no futuro
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 45)); // 45 dias no
-																										// futuro
+		LocalDate dataDeTransferencia = LocalDate.now().plusDays(45); // 45 dias no futuro
 
 		// Testando a taxa entre 41 e 50 dias
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);
@@ -85,8 +80,7 @@ class TransferenciaServiceTest {
 	@Test
 	public void testCalcularTaxa_MaiorQue50Dias() {
 		// Mockando a data para 55 dias no futuro
-		Date dataDeTransferencia = new Date(System.currentTimeMillis() + (1000L * 60 * 60 * 24 * 55)); // 55 dias no
-																										// futuro
+		LocalDate dataDeTransferencia = LocalDate.now().plusDays(55); // 55 dias no futuro
 
 		// Testando a taxa para mais de 50 dias
 		double taxa = transferenciaService.calcularTaxa(dataDeTransferencia);

@@ -1,6 +1,7 @@
 package com.example.transferencias.service;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,15 +30,17 @@ public class TransferenciaService {
 		double valorLiquido = transferencia.getValorBruto() - (transferencia.getValorBruto() * taxa);
 		transferencia.setValorLiquido(valorLiquido);
 
-		transferencia.setDataAgendamento(new Date());
+		// Usando LocalDate para a data de agendamento
+		transferencia.setDataAgendamento(LocalDate.now());
 
 		// Salva a transferência no repositório e retorna o objeto Transferencia
 		return transferenciaRepository.save(transferencia);
 	}
 
 	// Método para calcular a taxa com base na data de transferência
-	public double calcularTaxa(Date dataTransferencia) {
-		long diasDeDiferenca = (dataTransferencia.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
+	public double calcularTaxa(LocalDate dataTransferencia) {
+		// Calculando a diferença em dias entre a data de transferência e a data atual
+		long diasDeDiferenca = ChronoUnit.DAYS.between(LocalDate.now(), dataTransferencia);
 
 		if (diasDeDiferenca < 0)
 			return 0.025;

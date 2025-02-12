@@ -1,12 +1,9 @@
 package com.example.transferencias.model;
 
 import javax.persistence.*;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 @Entity
 public class Transferencia {
@@ -20,9 +17,8 @@ public class Transferencia {
 	private Double valorBruto;
 	private Double valorLiquido;
 	private Double taxa;
-	@JsonFormat(pattern = "yyyy-MM-dd")
-	private Date dataTransferencia;
-	private Date dataAgendamento;
+	private LocalDate dataTransferencia;
+	private LocalDate dataAgendamento;
 
 	public Long getId() {
 		return id;
@@ -72,19 +68,19 @@ public class Transferencia {
 		this.taxa = taxa;
 	}
 
-	public Date getDataTransferencia() {
+	public LocalDate getDataTransferencia() {
 		return dataTransferencia;
 	}
 
-	public void setDataTransferencia(Date dataTransferencia) {
+	public void setDataTransferencia(LocalDate dataTransferencia) {
 		this.dataTransferencia = dataTransferencia;
 	}
 
-	public Date getDataAgendamento() {
+	public LocalDate getDataAgendamento() {
 		return dataAgendamento;
 	}
 
-	public void setDataAgendamento(Date dataAgendamento) {
+	public void setDataAgendamento(LocalDate dataAgendamento) {
 		this.dataAgendamento = dataAgendamento;
 	}
 
@@ -116,15 +112,15 @@ public class Transferencia {
 		if (dataTransferencia == null) {
 			return "";
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		return sdf.format(this.dataTransferencia);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return this.dataTransferencia.format(formatter);
 	}
 
 	public String getDataAgendamentoFormatada() {
 		if (dataAgendamento == null) {
 			return "";
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-		return sdf.format(this.dataAgendamento);
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return this.dataAgendamento.format(formatter);
 	}
 }
