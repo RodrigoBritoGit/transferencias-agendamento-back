@@ -1,15 +1,13 @@
 package com.example.transferencias.service;
 
-import com.example.transferencias.model.Transferencia;
-import com.example.transferencias.repository.TransferenciaRepository;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
-
 import java.util.Date;
 import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.example.transferencias.model.Transferencia;
+import com.example.transferencias.repository.TransferenciaRepository;
 
 @Service
 public class TransferenciaService {
@@ -17,29 +15,28 @@ public class TransferenciaService {
 	@Autowired
 	private TransferenciaRepository transferenciaRepository;
 
-	public ResponseEntity<Transferencia> agendarTransferencia(Transferencia transferencia) {
+	// Alterando para retornar apenas Transferencia
+	public Transferencia agendarTransferencia(Transferencia transferencia) {
 
 		double taxa = calcularTaxa(transferencia.getDataTransferencia());
 
 		if (taxa == -1) {
-			return ResponseEntity.badRequest().body(null);
+			return null; // Retorna null caso a taxa seja inválida
 		}
 
 		transferencia.setTaxa(taxa);
 
 		double valorLiquido = transferencia.getValorBruto() - (transferencia.getValorBruto() * taxa);
-
 		transferencia.setValorLiquido(valorLiquido);
 
 		transferencia.setDataAgendamento(new Date());
 
-		Transferencia transferenciaSalva = transferenciaRepository.save(transferencia);
-
-		return ResponseEntity.status(HttpStatus.CREATED).body(transferenciaSalva);
+		// Salva a transferência no repositório e retorna o objeto Transferencia
+		return transferenciaRepository.save(transferencia);
 	}
 
+	// Método para calcular a taxa com base na data de transferência
 	public double calcularTaxa(Date dataTransferencia) {
-
 		long diasDeDiferenca = (dataTransferencia.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24);
 
 		if (diasDeDiferenca < 0)
@@ -58,7 +55,8 @@ public class TransferenciaService {
 		return -1;
 	}
 
+	// Método para listar todas as transferências
 	public List<Transferencia> listarTransferencias() {
-		return transferenciaRepository.findAll();
+		return transferenciaRepository.listarTransferencias();
 	}
 }
